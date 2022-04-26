@@ -14,32 +14,31 @@ namespace opossum {
 
 template <typename T>
 AllTypeVariant ValueSegment<T>::operator[](const ChunkOffset chunk_offset) const {
-  // Implementation goes here
-  Fail("Implementation is missing.");
+  return data[chunk_offset];
 }
 
 template <typename T>
 void ValueSegment<T>::append(const AllTypeVariant& val) {
-  // Implementation goes here
-  Fail("Implementation is missing.");
+  const auto value = type_cast<T>(val);
+  data.push_back(value);
 }
 
 template <typename T>
 ChunkOffset ValueSegment<T>::size() const {
   // Implementation goes here
-  return ChunkOffset{std::numeric_limits<ChunkOffset>::max()};
+  return data.size();//ChunkOffset{std::numeric_limits<ChunkOffset>::max()};
 }
 
 template <typename T>
 const std::vector<T>& ValueSegment<T>::values() const {
   // Implementation goes here
-  Fail("Implementation is missing.");
+  return data;
 }
 
 template <typename T>
 size_t ValueSegment<T>::estimate_memory_usage() const {
   // Implementation goes here
-  Fail("Implementation is missing.");
+  return sizeof(T) * size();
 }
 
 // Macro to instantiate the following classes:
