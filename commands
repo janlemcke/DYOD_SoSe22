@@ -1,0 +1,6 @@
+mkdir cmake-build-debug
+     cd cmake-build-debug
+     cmake ..
+     make -j4 hyriseTest
+     cd ..
+     ./cmake-build-debug/hyriseTest

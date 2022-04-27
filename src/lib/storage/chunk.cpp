@@ -14,27 +14,43 @@
 
 namespace opossum {
 
-void Chunk::add_segment(const std::shared_ptr<AbstractSegment> segment) {
-  // Implementation goes here
-}
+void Chunk::add_segment(const std::shared_ptr<AbstractSegment> segment) { segments.push_back(segment); }
 
 void Chunk::append(const std::vector<AllTypeVariant>& values) {
-  // Implementation goes here
+
+  // check if values are empty
+  if (values.empty()){
+    throw std::exception();
+  }
+  // check if shape matches
+  if (column_count() != values.size())
+    throw std::exception();
+
+  // append values to right segments
+  for (ChunkOffset i = 0; i < values.size(); i++) {
+    segments[i]->append(values[i]);
+  }
 }
 
 std::shared_ptr<AbstractSegment> Chunk::get_segment(const ColumnID column_id) const {
-  // Implementation goes here
-  return nullptr;
+  if (column_id >= column_count()){
+    throw  std::exception();
+  }
+  return segments[column_id];
 }
 
 ColumnCount Chunk::column_count() const {
-  // Implementation goes here
-  return ColumnCount{0};
+  return ColumnCount{segments.size()};
 }
 
 ChunkOffset Chunk::size() const {
-  // Implementation goes here
-  return 0;
+  ChunkOffset max = 0;
+  for (const std::shared_ptr<AbstractSegment>& n : segments) {
+    if (n->size() > max) {
+      max = n->size();
+    }
+  }
+  return max;
 }
 
 }  // namespace opossum
